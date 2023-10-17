@@ -1,0 +1,93 @@
+Index: vendor/typo3/cms-core/Classes/Utility/ExtensionManagementUtility.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/vendor/typo3/cms-core/Classes/Utility/ExtensionManagementUtility.php b/vendor/typo3/cms-core/Classes/Utility/ExtensionManagementUtility.php
+--- a/vendor/typo3/cms-core/Classes/Utility/ExtensionManagementUtility.php
++++ b/vendor/typo3/cms-core/Classes/Utility/ExtensionManagementUtility.php
+@@ -22,6 +22,7 @@
+ use TYPO3\CMS\Core\Cache\CacheManager;
+ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+ use TYPO3\CMS\Core\Configuration\Event\AfterTcaCompilationEvent;
++use TYPO3\CMS\Core\Configuration\Event\BeforeTcaOverridesEvent;
+ use TYPO3\CMS\Core\Core\Environment;
+ use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
+ use TYPO3\CMS\Core\Migrations\TcaMigration;
+@@ -1451,6 +1452,8 @@
+             }
+         }
+
++        static::dispatchBaseTcaIsBeingBuiltEvent($GLOBALS['TCA']);
++
+         // To require TCA Overrides in a safe scoped environment avoiding local variable clashes.
+         // @see TYPO3\CMS\Core\Tests\Functional\Utility\ExtensionManagementUtility\ExtensionManagementUtilityTcaOverrideRequireTest
+         $scopedRequire = static function (string $filename): void {
+@@ -1488,6 +1491,14 @@
+         static::dispatchTcaIsBeingBuiltEvent($GLOBALS['TCA']);
+     }
+
++    /**
++     * Triggers an event for manipulating the TCA before overrides are applied.
++     */
++    protected static function dispatchBaseTcaIsBeingBuiltEvent(array $tca): void
++    {
++        $GLOBALS['TCA'] = static::$eventDispatcher->dispatch(new BeforeTcaOverridesEvent($tca))->getTca();
++    }
++
+     /**
+      * Triggers an event for manipulating the final TCA
+      */
+
+Index: vendor/typo3/cms-core/Classes/Configuration/Event/BeforeTcaOverridesEvent.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/vendor/typo3/cms-core/Classes/Configuration/Event/BeforeTcaOverridesEvent.php b/vendor/typo3/cms-core/Classes/Configuration/Event/BeforeTcaOverridesEvent.php
+new file mode 100644
+--- /dev/null
++++ /vendor/typo3/cms-core/Classes/Configuration/Event/BeforeTcaOverridesEvent.php
+@@ -0,0 +1,41 @@
++<?php
++
++declare(strict_types=1);
++
++/*
++ * This file is part of the TYPO3 CMS project.
++ *
++ * It is free software; you can redistribute it and/or modify it under
++ * the terms of the GNU General Public License, either version 2
++ * of the License, or any later version.
++ *
++ * For the full copyright and license information, please read the
++ * LICENSE.txt file that was distributed with this source code.
++ *
++ * The TYPO3 project - inspiring people to share!
++ */
++
++namespace TYPO3\CMS\Core\Configuration\Event;
++
++/**
++ * Event before $GLOBALS['TCA'] is overridden by TCA/Overrides to allow to manipulate $tca, before overrides are merged.
++ *
++ * Side note: It is possible to check against the original TCA as this is stored within $GLOBALS['TCA']
++ * before this event is fired.
++ */
++final class BeforeTcaOverridesEvent
++{
++    public function __construct(private array $tca)
++    {
++    }
++
++    public function getTca(): array
++    {
++        return $this->tca;
++    }
++
++    public function setTca(array $tca): void
++    {
++        $this->tca = $tca;
++    }
++}
+\ No newline at end of file

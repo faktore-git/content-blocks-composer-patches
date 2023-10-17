@@ -1,0 +1,52 @@
+Index: vendor/contentblocks/content-blocks/Classes/Generator/TcaGenerator.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/vendor/contentblocks/content-blocks/Classes/Generator/TcaGenerator.php b/vendor/contentblocks/content-blocks/Classes/Generator/TcaGenerator.php
+--- a/vendor/contentblocks/content-blocks/Classes/Generator/TcaGenerator.php
++++ b/vendor/contentblocks/content-blocks/Classes/Generator/TcaGenerator.php	(date 1697485418233)
+@@ -29,7 +29,7 @@
+ use TYPO3\CMS\ContentBlocks\FieldConfiguration\FieldType;
+ use TYPO3\CMS\ContentBlocks\Registry\LanguageFileRegistryInterface;
+ use TYPO3\CMS\ContentBlocks\Service\TypeDefinitionLabelService;
+-use TYPO3\CMS\Core\Configuration\Event\AfterTcaCompilationEvent;
++use TYPO3\CMS\Core\Configuration\Event\BeforeTcaOverridesEvent;
+ use TYPO3\CMS\Core\Preparations\TcaPreparation;
+ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+ use TYPO3\CMS\Core\Utility\GeneralUtility;
+
+Index: vendor/contentblocks/content-blocks/Classes/Generator/TcaGenerator.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/vendor/contentblocks/content-blocks/Classes/Generator/TcaGenerator.php b/vendor/contentblocks/content-blocks/Classes/Generator/TcaGenerator.php
+--- a/vendor/contentblocks/content-blocks/Classes/Generator/TcaGenerator.php	
++++ b/vendor/contentblocks/content-blocks/Classes/Generator/TcaGenerator.php	
+@@ -86,7 +86,7 @@
+         protected readonly TcaPreparation $tcaPreparation,
+     ) {}
+ 
+-    public function __invoke(AfterTcaCompilationEvent $event): void
++    public function __invoke(BeforeTcaOverridesEvent $event): void
+     {
+         $event->setTca(array_replace_recursive($event->getTca(), $this->generate()));
+ 
+Index: vendor/contentblocks/content-blocks/Configuration/Services.yaml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/vendor/contentblocks/content-blocks/Configuration/Services.yaml b/vendor/contentblocks/content-blocks/Configuration/Services.yaml
+--- a/vendor/contentblocks/content-blocks/Configuration/Services.yaml	
++++ b/vendor/contentblocks/content-blocks/Configuration/Services.yaml	
+@@ -12,7 +12,7 @@
+     tags:
+       - name: event.listener
+         identifier: 'content-blocks-tca'
+-        event: TYPO3\CMS\Core\Configuration\Event\AfterTcaCompilationEvent
++        event: TYPO3\CMS\Core\Configuration\Event\BeforeTcaOverridesEvent
+ 
+   TYPO3\CMS\ContentBlocks\Generator\PageTypeGenerator:
+     public: true
