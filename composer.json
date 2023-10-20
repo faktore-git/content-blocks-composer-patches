@@ -30,10 +30,10 @@
   "extra": {
     "patches": {
       "typo3/cms-core": {
-        "Backports BeforeTcaOverridesEvent from TYPO3 13": "patches/typo3-cms-core-backport-before-tca-overrides-event.patch"
+        "Backports BeforeTcaOverridesEvent from TYPO3 13": "vendor/faktore/content-blocks-composer-patches/patches/typo3-cms-core-backport-before-tca-overrides-event.patch"
       },
       "contentblocks/content-blocks": {
-        "Make ContentBlocks use backported BeforeTcaOverridesEvent": "patches/content-blocks-make-content-blocks-use-before-tca-overrides-event.patch"
+        "Make ContentBlocks use backported BeforeTcaOverridesEvent": "vendor/faktore/content-blocks-composer-patches/patches/content-blocks-make-content-blocks-use-before-tca-overrides-event.patch"
       }
     }
   }
