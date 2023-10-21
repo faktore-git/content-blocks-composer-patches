@@ -33,3 +33,8 @@ or:
   }
 }
 ```
+
+## CAUTION
+
+Currently only works with version 0.1.3 of content blocks. 
+Solution for 0.1.4 and newer needs to be discussed with content blocks team first.  
