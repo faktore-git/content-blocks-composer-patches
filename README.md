@@ -1,3 +1,6 @@
+| :exclamation: This patch is to be considered obsolete for the time being. |
+|---------------------------------------------------------------------------|
+
 # content-blocks-composer-patches
 
 Provides composer patches to use EXT:content_blocks within
@@ -37,4 +40,4 @@ or:
 ## CAUTION
 
 Currently only works with version 0.1.3 of content blocks. 
-Solution for 0.1.4 and newer needs to be discussed with content blocks team first.  
+There is currently no known reason to have to apply these patches. 
